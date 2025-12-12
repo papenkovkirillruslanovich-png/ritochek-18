@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма оплаты курса</title>
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        /* Стили, которые вы предоставили */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+        .form-page-container {
+            max-width: 450px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .form-page-container h2 {
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .input-group input[type="text"],
+        .input-group input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 3px;
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        .checkbox-group a {
+            color: #a06e75;
+            text-decoration: underline;
+        }
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background-color: #a06e75;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 10px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: background-color 0.3s;
+        }
+        .submit-button:hover {
+            background-color: #885c62;
+        }
+        .main-content {
+            padding-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="main-nav">
+            <a href="index.html" class="nav-item">главная</a>
+            <a href="blog" class="nav-item">курс</a>
+            <a href="https://t.me/ВАШ_КАНАЛ" class="nav-item" target="_blank">материалы</a>
+            <a href="#" class="nav-item">контакты</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="form-page-container">
+            <h2>Оформление заказа</h2>
+            
+            <form id="paymentForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdNYNB-WlRWikClsZDM6W7u6emumWVBez9mn4lMEN88pWLBgA/formResponse" method="POST">
+                
+                <div class="input-group">
+                    <label for="name">Имя *</label>
+                    <input type="text" id="name" name="entry.998579375" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="entry.1949870681" required>
+                </div>
+                
+                <div class="checkbox-group">
+                    <label for="offer">Я согласен с <a href="offer.html" target="_blank">условиями оферты</a> *</label>
+                    <input type="checkbox" id="offer" name="entry.919144954" value="да" required>
+                </div>
+				<div class="checkbox-group">
+                    <label for="policy">Я согласен на обработку моих персональных данных согласно условиям <a href="policy.html" target="_blank">Политики конфиденциальности</a> *</label>
+                    <input type="checkbox" id="policy" name="entry.2090398804" value="да" required>
+                </div>
+                
+                <div class="checkbox-group">
+                    <label for="mailing">Даю согласие <a href="mailing-consent.html" target="_blank"> на получение информационных и маркетинговых рассылок</label>
+                    <input type="checkbox" id="mailing" name="entry.233138966" value="да">
+                </div>
+                
+                <button type="submit" class="submit-button">ПЕРЕЙТИ К ОПЛАТЕ</button>
+            </form>
+            
+        </div>
+    </main>
+    
+    <script>
+        const PAYMENT_URL = "https://payform.ru/di9Lm75/"; // Ваш Produmus URL
+        const form = document.getElementById('paymentForm');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Останавливаем стандартную отправку формы
+
+            const formData = new FormData(form);
+            
+            // Отправляем данные в Google Forms асинхронно
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors' 
+            })
+            .then(() => {
+                // После того, как запрос отправлен (даже если ответ не получен, данные ушли),
+                // ждем 50 миллисекунд для гарантии и перенаправляем.
+                setTimeout(() => {
+                    window.location.href = PAYMENT_URL;
+                }, 50); 
+            })
+            .catch(error => {
+                // Если произошла ошибка сети, мы все равно перенаправляем на оплату, 
+                // чтобы не терять клиента, но логируем ошибку.
+                console.error("Ошибка при отправке в Google Forms:", error);
+                window.location.href = PAYMENT_URL;
+            });
+        });
+    </script>
+</body>
+</html>
