@@ -48,7 +48,26 @@ h2 {
 .nav-item {
     text-decoration: none;
     color: #4a4a4a; 
+    position: relative; /* Для анимации подчеркивания */
 }
+
+/* АНИМАЦИЯ МЕНЮ: Подчеркивание при наведении */
+.nav-item::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin-top: 5px;
+    left: 0;
+    background: #a06e75; /* Цвет как у основной кнопки */
+    transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+    width: 100%;
+}
+/* --- Конец АНИМАЦИИ МЕНЮ --- */
 
 /* ======================== Основной блок (Контейнер) ======================== */
 .content-block {
@@ -56,6 +75,9 @@ h2 {
     max-width: 450px; /* Имитация мобильной ширины */
     padding: 0;
     box-sizing: border-box;
+    /* ИСПРАВЛЕНО: Разрешает браузеру ломать очень длинные слова/строки, чтобы они поместились */
+    overflow-wrap: break-word; 
+    word-wrap: break-word; 
 }
 
 /* Секция ниже кнопки (для отступов) */
@@ -99,14 +121,17 @@ h2 {
     line-height: 1.3;
 }
 
-/* ======================== Кнопка "ПЕРЕЙТИ К КУРСУ" ======================== */
+/* ======================== Кнопка "ПЕРЕЙТИ К КУРСУ" (Белая с анимацией нажатия) ======================== */
 .course-button {
     display: block;
     width: 90%; 
-    margin: 20px auto 40px auto; /* Добавили больше отступа снизу */
+    margin: 20px auto 40px auto; 
     padding: 18px 30px;
-    background-color: #a06e75; 
-    color: white;
+    
+    background-color: white; 
+    color: #a06e75; 
+    border: 2px solid #a06e75; 
+    
     text-decoration: none;
     font-size: 16px;
     font-weight: bold;
@@ -114,11 +139,25 @@ h2 {
     border-radius: 12px; 
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.15s ease-out; 
+    /* Добавляем сброс фокуса */
+    outline: none !important;
 }
 
 .course-button:hover {
-    background-color: #885c62;
+    background-color: #a06e75; 
+    color: white;
+    border-color: #a06e75;
 }
+
+/* АНИМАЦИЯ "НАЖАТИЯ" */
+.course-button:active {
+    transform: scale(0.98); 
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2); 
+    /* Добавляем сброс фокуса */
+    outline: none !important;
+}
+/* КОНЕЦ АНИМАЦИИ НАЖАТИЯ */
 
 /* ======================== Стили для YouTube-видео ======================== */
 .video-container {
@@ -139,91 +178,142 @@ h2 {
     border-radius: 8px;
 }
 
-/* ======================== НОВЫЕ СТИЛИ ДЛЯ АККОРДЕОНА (FAQ) ======================== */
+/* ======================== СТИЛИ ДЛЯ АККОРДЕОНА (FAQ) - СЛЕВА, ПЛЮС СЛЕВА ======================== */
 
 /* Контейнер для вопросов */
 .accordion {
-    margin-bottom: 8px; /* Меньший отступ между блоками */
-    border-radius: 10px;
-    overflow: hidden; /* Важно для скругления углов */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* Легкая тень */
+    margin-bottom: 15px; 
+    border-radius: 0; 
+    overflow: visible; 
+    box-shadow: none; 
+    border-bottom: 1px solid #e0d8cc; 
+    transition: background-color 0.3s;
 }
 
 /* Кнопка с вопросом */
 .accordion-button {
-    background-color: white; /* Чисто белый фон */
-    color: #333; /* Более темный текст */
+    background-color: transparent; 
+    color: #333; 
     cursor: pointer;
-    padding: 16px 20px;
+    /* Устанавливаем горизонтальные отступы: 15px слева и 15px справа для выравнивания по сетке */
+    padding: 16px 15px 16px 15px; 
     width: 100%;
     border: none;
-    text-align: left;
+    text-align: left; /* ВЫРАВНИВАНИЕ ТЕКСТА: СЛЕВА */
     outline: none;
     font-size: 15px;
-    font-weight: bold; /* Вопрос выделяем жирным */
-    transition: background-color 0.3s;
-    border-bottom: 1px solid transparent; /* Скрываем границу по умолчанию */
+    font-weight: bold; 
+    transition: color 0.3s;
     position: relative;
     display: flex;
-    justify-content: space-between;
+    /* ВЫРАВНИВАНИЕ КОНТЕНТА: СЛЕВА (плюс и текст идут подряд) */
+    justify-content: flex-start; 
     align-items: center;
+    font-family: Arial, sans-serif;
 }
 
 /* Эффект при наведении и активное состояние */
-.accordion-button:hover {
-    background-color: #f9f6f3; /* Очень светлый фон при наведении */
-}
-
-/* Стиль для активной кнопки */
+.accordion-button:hover,
 .accordion-button.active {
-    background-color: #f9f6f3; 
-    color: #a06e75; /* Активный вопрос выделяем цветом кнопки */
+    background-color: transparent; 
+    color: #a06e75; 
 }
 
-/* Иконка-индикатор (плюс/минус или стрелка) */
-.accordion-button::after {
-    content: '+'; /* Иконка для закрытого состояния */
+/* Иконка-индикатор (плюс/минус) СЛЕВА */
+.accordion-button::before {
+    content: '+'; 
     font-size: 20px;
     font-weight: normal;
     color: #a06e75; 
-    margin-left: 10px;
+    margin-right: 10px; /* Отступ справа от иконки до текста */
+    order: -1; /* Ставим иконку в начало flex-контейнера */
     transition: transform 0.3s ease;
 }
 
-.accordion-button.active::after {
-    content: '—'; /* Иконка для открытого состояния */
+.accordion-button.active::before {
+    content: '—'; 
     transform: rotate(0deg);
+}
+
+/* Убираем старую иконку, которая была справа */
+.accordion-button::after {
+    content: none; 
 }
 
 
 /* Содержимое ответа */
 .accordion-content {
-    padding: 0 20px;
-    background-color: white;
+    padding: 0 0px; 
+    background-color: transparent; 
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
 }
 
 .accordion-content p {
-    padding: 15px 0 20px 0; /* Увеличиваем нижний отступ, чтобы ответ "дышал" */
+    /* Добавляем горизонтальные отступы 15px для текста ответа (выравнивание по сетке) */
+    padding: 5px 15px 20px 15px; 
     font-size: 14px;
     color: #555;
     line-height: 1.5;
-    border-top: 1px solid #eee; /* Тонкая линия над ответом */
+    border-top: none; 
     margin: 0;
+    text-align: left; /* ВЫРАВНИВАНИЕ ТЕКСТА ОТВЕТА: СЛЕВА */
 }
+
+/* УНИКАЛЬНАЯ СТИЛИЗАЦИЯ ПЕРВОГО ВОПРОСА (С границей) */
+.secondary-content .accordion:first-child {
+    border-bottom: none; 
+    margin-bottom: 25px; 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(160, 110, 117, 0.15); 
+    overflow: hidden;
 }
+
+.secondary-content .accordion:first-child .accordion-button {
+    font-size: 1.1em; 
+    font-weight: 700;
+    color: #a06e75; 
+    border-left: 5px solid #a06e75; 
+    /* Паддинг: 16px сверху/снизу, 15px справа. 15px слева + 5px граница = 20px, чтобы текст выровнялся с остальным контентом */
+    padding: 16px 15px 16px 15px; 
+    background-color: #fff9f6; 
+    font-family: 'Georgia', serif; 
+    border-bottom: 1px solid #f7f3ed; 
+    justify-content: flex-start; /* ВЫРАВНИВАНИЕ КОНТЕНТА: СЛЕВА */
+    text-align: left; /* ВЫРАВНИВАНИЕ ТЕКСТА: СЛЕВА */
+}
+
+/* Переносим индикатор на первое место */
+.secondary-content .accordion:first-child .accordion-button::before {
+    order: -1;
+    margin-right: 10px;
+}
+
+.secondary-content .accordion:first-child .accordion-content {
+    background-color: #f7f3ed;
+}
+
+.secondary-content .accordion:first-child .accordion-content p {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    color: #777;
+    background-color: #f7f3ed;
+    padding: 15px 15px 20px 20px; 
+    text-align: left; /* ВЫРАВНИВАНИЕ ТЕКСТА ОТВЕТА: СЛЕВА */
+}
+/* КОНЕЦ УНИКАЛЬНОЙ СТИЛИЗАЦИИ ПЕРВОГО ВОПРОСА */
+
+
 /* ======================== Стили для Слайдера ======================== */
 .slider-full-width {
     width: 100%;
-    /* Добавляем отступы по бокам, чтобы слайдер не прилипал к краю экрана */
     padding: 0 15px; 
     box-sizing: border-box;
 }
 
 .slider-container {
-    max-width: 450px; /* Ограничиваем ширину, чтобы он выглядел как на мобильном */
+    max-width: 450px; 
     position: relative;
     margin: auto;
 }
@@ -234,7 +324,7 @@ h2 {
 }
 
 .slide {
-    display: none; /* Изначально все слайды скрыты */
+    display: none; 
     width: 100%;
 }
 
@@ -243,30 +333,104 @@ h2 {
     vertical-align: middle;
 }
 
-/* Стили для кнопок (стрелок) */
+/* КРУГЛЫЕ ПРОЗРАЧНЫЕ КНОПКИ СЛАЙДЕРА */
 .prev, .next {
     cursor: pointer;
     position: absolute;
     top: 50%;
-    width: auto;
-    padding: 16px;
-    margin-top: -22px;
-    color: white;
+    width: 40px; 
+    height: 40px; 
+    line-height: 40px; 
+    padding: 0;
+    margin-top: -20px; 
+    
+    color: #a06e75; /* Розовая стрелка */
+    background-color: transparent; /* Полностью прозрачный фон */
+    border: 2px solid #a06e75; /* Розовая рамка */
+    
     font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
+    font-size: 24px; 
+    text-align: center; 
+    transition: all 0.3s ease;
+    border-radius: 80%; 
     user-select: none;
-    background-color: rgba(0,0,0,0.5); /* Полупрозрачный фон стрелок */
+    box-shadow: 0 0 5px rgba(160, 110, 117, 0.2); 
     text-decoration: none;
-    z-index: 10; /* Убедимся, что стрелки поверх картинки */
+    z-index: 10; 
+}
+
+/* Эффект наведения: заполнение цветом */
+.prev:hover, .next:hover {
+    background-color: #a06e75; 
+    color: white; 
+    box-shadow: 0 0 8px rgba(160, 110, 117, 0.8);
 }
 
 .next {
     right: 0;
-    border-radius: 3px 0 0 3px;
 }
 
-.prev:hover, .next:hover {
-    background-color: rgba(0,0,0,0.8);
+.prev {
+    left: 0;
 }
+/* КОНЕЦ КРУГЛЫХ ПРОЗРАЧНЫХ КНОПОК */
+
+/* ======================== СТИЛИ ДЛЯ ФОРМЫ (form.html) ======================== */
+
+.form-page-container {
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* СТИЛИ КНОПКИ ОПЛАТЫ (Белая по умолчанию, Розовая при наведении) */
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    
+    background-color: white; 
+    color: #a06e75; 
+    border: 2px solid #a06e75; 
+
+    text-decoration: none !important; 
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 25px;
+    transition: all 0.3s;
+    
+    /* УЛЬТИМАТИВНЫЙ СБРОС СИНЕЙ ЛИНИИ */
+    outline: none !important; 
+    box-shadow: none !important; 
+    -webkit-tap-highlight-color: transparent; /* Для мобильных WebKit */
+    -webkit-appearance: none; /* Для сброса стилей кнопок WebKit */
+}
+
+.submit-button:hover {
+    background-color: #a06e75; 
+    color: white; 
+    border-color: #a06e75; 
+}
+
+/* УБИРАЕМ СИНЕЕ ПОДЧЕРКИВАНИЕ/РАМКУ ПРИ КЛИКЕ/ФОКУСЕ */
+.submit-button:focus,
+.submit-button:active {
+    text-decoration: none !important; 
+    outline: none !important; 
+    box-shadow: none !important; 
+    border-color: #a06e75 !important; /* Гарантируем, что цвет рамки не сбросится на синий */
+    background-color: #a06e75; /* Защита от сброса цвета */
+    color: white; /* Защита от сброса цвета текста */
+}
+
+.submit-button::-moz-focus-inner {
+    border: 0; /* Сброс для Firefox */
+}
+/* ======================== КОНЕЦ СТИЛЕЙ ДЛЯ ФОРМЫ ======================== */
