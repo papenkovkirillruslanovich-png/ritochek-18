@@ -14,13 +14,6 @@ body {
     min-height: 100vh;
 }
 
-h2 {
-    font-size: 1.5em;
-    margin-top: 30px;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
 /* ======================== Меню (Навигация) - СОХРАНЕННЫЙ СТИЛЬ ======================== */
 .header {
 	position: fixed; 
@@ -47,6 +40,23 @@ h2 {
 .nav-item {
     text-decoration: none;
     color: #4a4a4a; 
+    position: relative;
+}
+
+.nav-item::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin-top: 5px;
+    left: 0;
+    background: #a06e75;
+    transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+    width: 100%;
 }
 
 /* ======================== Основной блок (Контейнер) ======================== */
@@ -56,6 +66,8 @@ h2 {
     padding: 0;
     box-sizing: border-box;
     margin-top: 70px;
+    overflow-wrap: break-word; 
+    word-wrap: break-word; 
 }
 
 .secondary-content {
@@ -75,6 +87,7 @@ h2 {
     object-fit: cover;
 }
 
+
 /* ======================== СТИЛЬНЫЕ КНОПКИ (СОХРАНЕННЫЙ СТИЛЬ) ======================== */
 :root {
     --accent-color: #a06e75;
@@ -87,68 +100,52 @@ h2 {
     max-width: 350px; 
     margin: 30px auto 40px auto; 
     padding: 18px 30px;
-    background-color: var(--accent-color); 
-    color: white;
+    
+    background-color: white; 
+    color: var(--accent-color); 
+    border: 2px solid var(--accent-color); 
+    
     text-decoration: none;
-    font-size: 18px; 
+    font-size: 16px;
     font-weight: bold;
     text-transform: uppercase;
     border-radius: 12px; 
     text-align: center;
-    box-shadow: 0 6px 15px rgba(160, 110, 117, 0.5); 
-    transition: all 0.3s ease; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.15s ease-out; 
+    outline: none !important;
 }
 
 .course-button:hover {
-    background-color: var(--accent-dark);
-    transform: translateY(-2px); 
-    box-shadow: 0 8px 20px rgba(160, 110, 117, 0.7);
+    background-color: var(--accent-color); 
+    color: white;
+    border-color: var(--accent-color);
 }
 
-.course-button--animated {
-    animation: pulse-pink 2s infinite; 
+.course-button:active {
+    transform: scale(0.98); 
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2); 
+    outline: none !important;
 }
 
-.course-button--animated:hover {
-    animation: none; 
-}
+/* ======================== НОВЫЙ БЛОК: 8 ФОТО С АНИМАЦИЕЙ КЕНА БЕРНСА ======================== */
 
-@keyframes pulse-pink {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(160, 110, 117, 0.6); 
-    }
-    70% {
-        transform: scale(1.02);
-        box-shadow: 0 0 0 15px rgba(160, 110, 117, 0); 
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(160, 110, 117, 0);
-    }
-}
-
-
-/* ======================== АНИМАЦИЯ ФОТОГРАФИЙ (ЭФФЕКТ КЕНА БЁРНСА) ======================== */
-
-/* 1. Сетка для размещения трех фото в ряд */
-.image-grid {
-    display: flex;
-    justify-content: space-between;
+.photo-slide-grid {
+    display: grid;
+    /* 2 столбца на мобильных */
+    grid-template-columns: repeat(2, 1fr); 
     gap: 5px; 
     padding: 0 10px;
-    margin-bottom: 20px;
+    margin: 20px 0 30px 0;
 }
 
-.image-grid-item {
-    width: calc(33.33% - 5px); 
-    height: 150px; /* Фиксированная высота для единообразия */
-    border-radius: 8px; 
-    overflow: hidden; /* Критично: обрезает картинку, которая увеличивается */
+.photo-item {
+    height: 150px; /* Фиксированная высота для каждого фото */
+    overflow: hidden; /* Обрезает увеличенное изображение */
+    border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* 2. Стилизация самого изображения */
 .ken-burns-img {
     width: 100%;
     height: 100%;
@@ -159,22 +156,34 @@ h2 {
     animation: slow-zoom 15s infinite alternate ease-in-out;
 }
 
-/* 3. Определение ключевых кадров анимации */
+/* Определение ключевых кадров анимации Кена Бёрнса (масштаб + небольшой сдвиг) */
 @keyframes slow-zoom {
-    0% { transform: scale(1.0); } /* Начало: без зума */
-    100% { transform: scale(1.05); } /* Конец: приближение на 5% */
+    0% { transform: scale(1.0) translateX(0); } 
+    100% { transform: scale(1.1) translateX(-2%); } 
 }
 
-/* 4. Дополнительный эффект при наведении (ускорение зума) */
-.image-grid-item:hover .ken-burns-img {
+/* Улучшение при наведении (более сильный зум) */
+.photo-item:hover .ken-burns-img {
     animation: none; /* Останавливаем постоянную анимацию */
     transition: transform 3s ease-out; /* Плавный переход при наведении */
-    transform: scale(1.1); /* Увеличение зума */
+    transform: scale(1.2); 
 }
 
+/* Медиа-запрос для экранов пошире (например, планшетов) */
+@media (min-width: 451px) {
+    .photo-slide-grid {
+        /* 4 столбца на более широких экранах */
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 8px;
+    }
+    .photo-item {
+        height: 180px; 
+    }
+}
+/* ======================== КОНЕЦ БЛОКА АНИМАЦИИ КЕНА БЕРНСА ======================== */
 
-/* ======================== Остальные стили ======================== */
 
+/* ======================== Стили для YouTube-видео ======================== */
 .video-container {
     position: relative;
     width: 100%;
@@ -193,73 +202,121 @@ h2 {
     border-radius: 8px;
 }
 
-/* Аккордеон (стили сохранены) */
+/* ======================== СТИЛИ ДЛЯ АККОРДЕОНА (СОХРАНЕННЫЙ СТИЛЬ) ======================== */
+
 .accordion {
-    margin-bottom: 8px; 
-    border-radius: 10px;
-    overflow: hidden; 
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08); 
+    margin-bottom: 15px; 
+    border-radius: 0; 
+    overflow: visible; 
+    box-shadow: none; 
+    border-bottom: 1px solid #e0d8cc; 
+    transition: background-color 0.3s;
 }
 
 .accordion-button {
-    background-color: white; 
+    background-color: transparent; 
     color: #333; 
     cursor: pointer;
-    padding: 16px 20px;
+    padding: 16px 15px 16px 15px; 
     width: 100%;
     border: none;
     text-align: left;
     outline: none;
     font-size: 15px;
     font-weight: bold; 
-    transition: background-color 0.3s;
+    transition: color 0.3s;
     position: relative;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start; 
     align-items: center;
+    font-family: Arial, sans-serif;
 }
 
-.accordion-button:hover {
-    background-color: #f9f6f3; 
-}
-
+.accordion-button:hover,
 .accordion-button.active {
-    background-color: #f9f6f3; 
-    color: var(--accent-color); 
+    background-color: transparent; 
+    color: #a06e75; 
 }
 
-.accordion-button::after {
+.accordion-button::before {
     content: '+'; 
     font-size: 20px;
     font-weight: normal;
-    color: var(--accent-color); 
-    margin-left: 10px;
+    color: #a06e75; 
+    margin-right: 10px;
+    order: -1; 
     transition: transform 0.3s ease;
 }
 
-.accordion-button.active::after {
+.accordion-button.active::before {
     content: '—'; 
     transform: rotate(0deg);
 }
 
+.accordion-button::after {
+    content: none; 
+}
+
 .accordion-content {
-    padding: 0 20px;
-    background-color: white;
+    padding: 0 0px; 
+    background-color: transparent; 
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
 }
 
 .accordion-content p {
-    padding: 15px 0 20px 0; 
+    padding: 5px 15px 20px 15px; 
     font-size: 14px;
     color: #555;
     line-height: 1.5;
-    border-top: 1px solid #eee; 
+    border-top: none; 
     margin: 0;
+    text-align: left;
 }
 
-/* Слайдер (стили сохранены) */
+/* УНИКАЛЬНАЯ СТИЛИЗАЦИЯ ПЕРВОГО ВОПРОСА */
+.secondary-content .accordion:first-child {
+    border-bottom: none; 
+    margin-bottom: 25px; 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(160, 110, 117, 0.15); 
+    overflow: hidden;
+}
+
+.secondary-content .accordion:first-child .accordion-button {
+    font-size: 1.1em; 
+    font-weight: 700;
+    color: #a06e75; 
+    border-left: 5px solid #a06e75; 
+    padding: 16px 15px 16px 15px; 
+    background-color: #fff9f6; 
+    font-family: 'Georgia', serif; 
+    border-bottom: 1px solid #f7f3ed; 
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.secondary-content .accordion:first-child .accordion-button::before {
+    order: -1;
+    margin-right: 10px;
+}
+
+.secondary-content .accordion:first-child .accordion-content {
+    background-color: #f7f3ed;
+}
+
+.secondary-content .accordion:first-child .accordion-content p {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    color: #777;
+    background-color: #f7f3ed;
+    padding: 15px 15px 20px 20px; 
+    text-align: left;
+}
+
+
+/* ======================== Стили для Слайдера ======================== */
 .slider-full-width {
     width: 100%;
     padding: 0 15px; 
@@ -291,30 +348,43 @@ h2 {
     cursor: pointer;
     position: absolute;
     top: 50%;
-    width: auto;
-    padding: 16px;
-    margin-top: -22px;
-    color: white;
+    width: 40px; 
+    height: 40px; 
+    line-height: 40px; 
+    padding: 0;
+    margin-top: -20px; 
+    
+    color: #a06e75;
+    background-color: transparent;
+    border: 2px solid #a06e75;
+    
     font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
+    font-size: 24px; 
+    text-align: center; 
+    transition: all 0.3s ease;
+    border-radius: 80%; 
     user-select: none;
-    background-color: rgba(0,0,0,0.5); 
+    box-shadow: 0 0 5px rgba(160, 110, 117, 0.2); 
     text-decoration: none;
     z-index: 10; 
 }
 
+.prev:hover, .next:hover {
+    background-color: #a06e75; 
+    color: white; 
+    box-shadow: 0 0 8px rgba(160, 110, 117, 0.8);
+}
+
 .next {
     right: 0;
-    border-radius: 3px 0 0 3px;
 }
 
-.prev:hover, .next:hover {
-    background-color: rgba(0,0,0,0.8);
+.prev {
+    left: 0;
 }
 
-/* Футер (стили сохранены) */
+
+/* ======================== ФУТЕР (СОХРАНЕННЫЙ СТИЛЬ) ======================== */
 .footer-block {
     width: 100%;
     max-width: 450px;
@@ -325,25 +395,24 @@ h2 {
     margin-top: 40px;
 }
 
-/* Медиа-запросы */
-@media (max-width: 600px) {
-    .course-button {
-        font-size: 16px;
-        padding: 15px 20px;
-    }
-    .content-block {
-        margin-top: 65px;
-    }
-    /* На маленьких экранах показываем только два изображения в ряд */
-    .image-grid {
-        justify-content: space-around;
-    }
-    .image-grid-item {
-         width: calc(50% - 5px); /* Два элемента в ряд */
-         height: 180px; /* Увеличиваем высоту */
-    }
-    /* Третье изображение прячем, или показываем на новой строке */
-    .image-grid-item:nth-child(3) {
-        display: none; 
-    }
-	}
+/* Стили для ссылок в подвале */
+.footer-block a {
+    color: #4a4a4a !important; /* Насильно делаем ссылки черными */
+}
+/* СТИЛИ КНОПКИ ОПЛАТЫ (Белая по умолчанию, Розовая при наведении) */
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    
+    background-color: white; 
+    color: #a06e75; 
+    border: 2px solid #a06e75; 
+    /* ... остальные стили ... */
+}
+
+.submit-button:hover {
+    background-color: #a06e75; 
+    color: white; 
+    border-color: #a06e75; 
+}
