@@ -11,14 +11,8 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #f4f4f9;
         }
-        .form-page-container {
-            max-width: 450px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+        /* .form-page-container теперь стилизован в style.css */
+        
         .form-page-container h2 {
             font-size: 1.8em;
             text-align: center;
@@ -50,35 +44,51 @@
             font-size: 13px;
             line-height: 1.4;
         }
+        /* Стили для квадратного чекбокса */
         .checkbox-group input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            
+            width: 16px; 
+            height: 16px;
+            border: 2px solid #a06e75;
+            border-radius: 2px; 
+            
             margin-top: 3px;
             margin-right: 10px;
-            transform: scale(1.2);
+            transform: scale(1.1); 
+            cursor: pointer;
+            position: relative;
+            background-color: transparent;
+            transition: background-color 0.1s, border-color 0.1s;
+            flex-shrink: 0; 
         }
+        /* Стиль для отмеченного чекбокса */
+        .checkbox-group input[type="checkbox"]:checked {
+            background-color: #a06e75;
+            border-color: #a06e75;
+        }
+        /* Стиль для галочки внутри чекбокса */
+        .checkbox-group input[type="checkbox"]:checked::after {
+            content: '✓'; 
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            line-height: 1;
+        }
+        
         .checkbox-group a {
             color: #a06e75;
             text-decoration: underline;
         }
-        .submit-button {
-            display: block;
-            width: 100%;
-            padding: 18px;
-            background-color: #a06e75;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 10px;
-            text-align: center;
-            border: none;
-            cursor: pointer;
-            margin-top: 25px;
-            transition: background-color 0.3s;
-        }
-        .submit-button:hover {
-            background-color: #885c62;
-        }
+        
+        /* ВСЕ СТИЛИ КНОПКИ .submit-button, :hover, :focus, :active, :after УДАЛЕНЫ ОТСЮДА! */
+
         .main-content {
             padding-top: 50px;
         }
@@ -89,9 +99,9 @@
     <header class="header">
         <nav class="main-nav">
             <a href="index.html" class="nav-item">главная</a>
-            <a href="index.html#blog" class="nav-item">курс</a>
-            <a href="index.html#mater" class="nav-item" target="_blank">материалы</a>
-            <a href="index.html#kontakt" class="nav-item">контакты</a>
+            <a href="#blog" class="nav-item">курс</a>
+            <a href="#mater" class="nav-item">материалы</a>
+            <a href="#kontakt" class="nav-item">контакты</a>
         </nav>
     </header>
 
@@ -112,22 +122,20 @@
                 </div>
                 
                 <div class="checkbox-group">
-                    <label for="offer">Я согласен с <a href="offer.html" target="_blank">условиями оферты</a> *</label>
                     <input type="checkbox" id="offer" name="entry.919144954" value="да" required>
+                    <label for="offer">Я согласен с <a href="offer.html" target="_blank">условиями оферты</a> *</label>
                 </div>
 				<div class="checkbox-group">
-                    <label for="policy">Я согласен на обработку моих персональных данных согласно условиям <a href="policy.html" target="_blank">Политики конфиденциальности</a> *</label>
                     <input type="checkbox" id="policy" name="entry.2090398804" value="да" required>
+                    <label for="policy">Я согласен на обработку моих персональных данных согласно условиям <a href="policy.html" target="_blank">Политики конфиденциальности</a> *</label>
                 </div>
                 
                 <div class="checkbox-group">
-                    <label for="mailing">Даю согласие <a href="mailing-consent.html" target="_blank"> на получение информационных и маркетинговых рассылок</label>
                     <input type="checkbox" id="mailing" name="entry.233138966" value="да">
-                </div>
-                
+                    <label for="mailing">Даю согласие <a href="mailing-consent.html" target="_blank"> на получение информационных и маркетинговых рассылок</label>
+                </div>   
                 <button type="submit" class="submit-button">ПЕРЕЙТИ К ОПЛАТЕ</button>
             </form>
-            
         </div>
     </main>
     
@@ -163,4 +171,3 @@
     </script>
 </body>
 </html>
-
