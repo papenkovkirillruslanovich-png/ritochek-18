@@ -1,7 +1,7 @@
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: smooth; 
 }
-/* ======================== Сброс и Фон (ОРИГИНАЛЬНЫЙ) ======================== */
+/* ======================== Сброс и Фон ======================== */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -14,7 +14,14 @@ body {
     min-height: 100vh;
 }
 
-/* ======================== Меню (Навигация) - СОХРАНЕННЫЙ СТИЛЬ ======================== */
+h2 {
+    font-size: 1.5em;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ======================== Меню (Навигация) ======================== */
 .header {
 	position: fixed; 
 	z-index: 1000; 
@@ -88,13 +95,20 @@ body {
 }
 
 
-/* ======================== СТИЛЬНЫЕ КНОПКИ (СОХРАНЕННЫЙ СТИЛЬ) ======================== */
+/* ======================== СТИЛЬНЫЕ КНОПКИ ======================== */
 :root {
     --accent-color: #a06e75;
     --accent-dark: #885c62;
 }
 
 .course-button {
+    /* СБРОС СТИЛЕЙ БРАУЗЕРА ДЛЯ КНОПКИ <button> */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    outline: none;
+    
     display: block;
     width: 90%; 
     max-width: 350px; 
@@ -105,12 +119,13 @@ body {
     color: var(--accent-color); 
     border: 2px solid var(--accent-color); 
     
-    text-decoration: none;
+    text-decoration: none !important;
     font-size: 16px;
     font-weight: bold;
     text-transform: uppercase;
     border-radius: 12px; 
     text-align: center;
+    cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.15s ease-out; 
     outline: none !important;
@@ -128,59 +143,49 @@ body {
     outline: none !important;
 }
 
-/* ======================== НОВЫЙ БЛОК: 8 ФОТО С АНИМАЦИЕЙ КЕНА БЕРНСА ======================== */
+/* ======================== НОВЫЙ БЛОК: АНИМАЦИЯ БЕГУЩЕЙ ЛЕНТЫ ======================== */
 
-.photo-slide-grid {
-    display: grid;
-    /* 2 столбца на мобильных */
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 5px; 
-    padding: 0 10px;
+.scrolling-wrapper {
+    width: 100%;
+    overflow: hidden; /* Скрывает полосу прокрутки и обрезанный контент */
+    white-space: nowrap; /* Все элементы в ряд */
     margin: 20px 0 30px 0;
-}
-
-.photo-item {
-    height: 150px; /* Фиксированная высота для каждого фото */
-    overflow: hidden; /* Обрезает увеличенное изображение */
-    border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.ken-burns-img {
+.scrolling-content {
+    display: flex;
+    animation: scroll-left 40s linear infinite; /* Анимация: 40 секунд, линейно, бесконечно */
+    width: 200%; /* Удвоение ширины для размещения дубликатов */
+}
+
+/* Стили для одного элемента фото в ленте */
+.photo-item {
+    display: inline-block;
+    width: 120px; /* Ширина одного фото, можете настроить */
+    height: 120px; /* Фиксированная высота */
+    margin-right: 5px; /* Небольшой отступ между фото */
+    overflow: hidden;
+    flex-shrink: 0; /* Важно: запрещает элементам сжиматься */
+    border-radius: 8px;
+}
+
+.photo-item img {
     width: 100%;
     height: 100%;
+    object-fit: cover; /* Обрезает, но покрывает область */
     display: block;
-    object-fit: cover;
-    
-    /* Добавляем постоянную и очень медленную анимацию */
-    animation: slow-zoom 15s infinite alternate ease-in-out;
 }
 
-/* Определение ключевых кадров анимации Кена Бёрнса (масштаб + небольшой сдвиг) */
-@keyframes slow-zoom {
-    0% { transform: scale(1.0) translateX(0); } 
-    100% { transform: scale(1.1) translateX(-2%); } 
-}
-
-/* Улучшение при наведении (более сильный зум) */
-.photo-item:hover .ken-burns-img {
-    animation: none; /* Останавливаем постоянную анимацию */
-    transition: transform 3s ease-out; /* Плавный переход при наведении */
-    transform: scale(1.2); 
-}
-
-/* Медиа-запрос для экранов пошире (например, планшетов) */
-@media (min-width: 451px) {
-    .photo-slide-grid {
-        /* 4 столбца на более широких экранах */
-        grid-template-columns: repeat(4, 1fr); 
-        gap: 8px;
+/* Ключевые кадры для бесконечного движения */
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0); /* Начало: 0% сдвига */
     }
-    .photo-item {
-        height: 180px; 
+    100% {
+        transform: translateX(-50%); /* Конец: Сдвигаем на 50% влево (чтобы скрыть первый набор) */
     }
 }
-/* ======================== КОНЕЦ БЛОКА АНИМАЦИИ КЕНА БЕРНСА ======================== */
 
 
 /* ======================== Стили для YouTube-видео ======================== */
@@ -202,7 +207,7 @@ body {
     border-radius: 8px;
 }
 
-/* ======================== СТИЛИ ДЛЯ АККОРДЕОНА (СОХРАНЕННЫЙ СТИЛЬ) ======================== */
+/* ======================== СТИЛИ ДЛЯ АККОРДЕОНА ======================== */
 
 .accordion {
     margin-bottom: 15px; 
@@ -251,10 +256,6 @@ body {
 .accordion-button.active::before {
     content: '—'; 
     transform: rotate(0deg);
-}
-
-.accordion-button::after {
-    content: none; 
 }
 
 .accordion-content {
@@ -384,7 +385,7 @@ body {
 }
 
 
-/* ======================== ФУТЕР (СОХРАНЕННЫЙ СТИЛЬ) ======================== */
+/* ======================== ФУТЕР ======================== */
 .footer-block {
     width: 100%;
     max-width: 450px;
@@ -397,22 +398,5 @@ body {
 
 /* Стили для ссылок в подвале */
 .footer-block a {
-    color: #4a4a4a !important; /* Насильно делаем ссылки черными */
-}
-/* СТИЛИ КНОПКИ ОПЛАТЫ (Белая по умолчанию, Розовая при наведении) */
-.submit-button {
-    display: block;
-    width: 100%;
-    padding: 18px;
-    
-    background-color: white; 
-    color: #a06e75; 
-    border: 2px solid #a06e75; 
-    /* ... остальные стили ... */
-}
-
-.submit-button:hover {
-    background-color: #a06e75; 
-    color: white; 
-    border-color: #a06e75; 
+    color: #4a4a4a !important; 
 }
